@@ -10,7 +10,7 @@ use MadeForYou\FilamentPages\Database\Factories\PageFactory;
 
 /**
  * ## Page model
- * ___
+ * _________________________________
  *
  * @property-read int $id
  * @property string $name
@@ -19,6 +19,11 @@ use MadeForYou\FilamentPages\Database\Factories\PageFactory;
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  * @property-read ?Carbon $deleted_at
+ *
+ * @method static PageFactory factory($count = null, $state = [])
+ *
+ * @package made-foryou/filament-pages
+ * @author Menno Tempelaar <menno@made-foryou.nl>
  */
 final class Page extends Model
 {
