@@ -3,8 +3,10 @@
 namespace MadeForYou\FilamentPages\Filament\Resources;
 
 use Exception;
-use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Builder\Block;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Builder as FormBuilder;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Resources\Resource;
@@ -70,18 +72,36 @@ class PageResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->required(),
+                Section::make(__('Pagina'))
+                    ->description(__('Basis informatie van de pagina.'))
+                    ->aside()
+                    ->columns([
+                        'sm' => 1,
+                    ])
+                    ->schema([
+                        TextInput::make('name')
+                            ->label(__('Pagina naam'))
+                            ->required(),
 
-                TextInput::make('summary'),
+                        TextInput::make('summary')
+                            ->label(__('Introductie'))
+                            ->helperText(__("Een korte samenvattende introductie over de inhoud van de pagina."))
+                            ->nullable(),
+                    ]),
 
-                Placeholder::make('created_at')
-                    ->label('Created Date')
-                    ->content(fn(?Page $record): string => $record?->created_at?->diffForHumans() ?? '-'),
-
-                Placeholder::make('updated_at')
-                    ->label('Last Modified Date')
-                    ->content(fn(?Page $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                Section::make(heading: 'Inhoud')
+                    ->description(description: 'Pagina inhoud van het bericht')
+                    ->columns(columns: [
+                        'sm' => 1,
+                    ])
+                    ->collapsible()
+                    ->schema(components: [
+                        FormBuilder::make(name: 'content')
+                            ->label(__('Pagina inhoud'))
+                            ->blocks(self::getContentBlocks())
+                            ->reorderable()
+                            ->collapsible(),
+                    ]),
             ]);
     }
 
@@ -143,9 +163,22 @@ class PageResource extends Resource
     {
         return [
             'index' => Pages\ListPages::route('/'),
+            'view' => Pages\ViewPage::route('/{record}'),
             'create' => Pages\CreatePage::route('/create'),
             'edit' => Pages\EditPage::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * Gathers the content block components from the configuration.
+     *
+     * @return array<int, Block>
+     */
+    public static function getContentBlocks(): array
+    {
+        return collect(config('made-filament-pages.content_blocks'))
+            ->map(fn (string $block) => (new $block)->getBlock())
+            ->toArray();
     }
 
     /**
