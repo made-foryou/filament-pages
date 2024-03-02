@@ -6,7 +6,7 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 
-class FilamentPagesServiceProvider extends PackageServiceProvider
+final class FilamentPagesServiceProvider extends PackageServiceProvider
 {
 	public static string $name = 'made-filament-pages';
 

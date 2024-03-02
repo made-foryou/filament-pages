@@ -4,6 +4,8 @@ namespace MadeForYou\FilamentPages\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use MadeForYou\FilamentPages\Database\Factories\PageFactory;
 
 /**
  * ## Page model
@@ -17,8 +19,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read Carbon $updated_at
  * @property-read ?Carbon $deleted_at
  */
-class Page extends Model
+final class Page extends Model
 {
+    use HasFactory;
+
     /**
      * The attributes that should be cast.
      *
@@ -42,4 +46,14 @@ class Page extends Model
         'summary',
         'content',
     ];
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return PageFactory
+     */
+    protected static function newFactory(): PageFactory
+    {
+        return PageFactory::new();
+    }
 }
