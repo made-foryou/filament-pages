@@ -3,10 +3,13 @@
 namespace MadeForYou\FilamentPages\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 use MadeForYou\FilamentPages\Database\Factories\PageFactory;
+use MadeForYou\Routes\Contracts\HasRoute;
+use MadeForYou\Routes\Models\WithRoute;
 
 /**
  * ## Page model
@@ -22,13 +25,14 @@ use MadeForYou\FilamentPages\Database\Factories\PageFactory;
  *
  * @method static PageFactory factory($count = null, $state = [])
  *
- * @package made-foryou/filament-pages
  * @author Menno Tempelaar <menno@made-foryou.nl>
+ * @package made-foryou/filament-pages
  */
-final class Page extends Model
+final class Page extends Model implements HasRoute
 {
     use HasFactory;
     use SoftDeletes;
+    use WithRoute;
 
     /**
      * The attributes that should be cast.
@@ -53,6 +57,46 @@ final class Page extends Model
         'summary',
         'content',
     ];
+
+    /**
+     * @return string
+     */
+    #[\Override] public function getUrl(): string
+    {
+        return Str::slug($this->name);
+    }
+
+    /**
+     * @return string
+     */
+    #[\Override] public function getRouteName(): string
+    {
+        return 'page.'.$this->id;
+    }
+
+    /**
+     * @return string
+     */
+    #[\Override] public function getTitle(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    #[\Override] public function getType(): string
+    {
+        return 'Pagina';
+    }
+
+    /**
+     * @return string
+     */
+    #[\Override] public function getResourceLink(): string
+    {
+        return '';
+    }
 
     /**
      * Create a new factory instance for the model.
