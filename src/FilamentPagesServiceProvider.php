@@ -34,13 +34,17 @@ final class FilamentPagesServiceProvider extends PackageServiceProvider
 	): void {
 		$package->name(self::$name)
             ->hasConfigFile()
+            ->hasMigrations([
+                '2024_03_02_132629_create_pages_table'
+            ])
             ->hasInstallCommand(function (InstallCommand $installCommand) {
                 $installCommand->startWith(
                     fn (InstallCommand $command) => $command->info(
                         'Let\'s install the Made for you filament pages package.'
                     )
                 )
-                    ->publishConfigFile();
+                    ->publishConfigFile()
+                    ->publishMigrations();
             });
 	}
 }
