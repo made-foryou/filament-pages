@@ -8,6 +8,10 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Builder as FormBuilder;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\Section as InfoListSection;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
@@ -152,6 +156,70 @@ final class PageResource extends Resource
                     ForceDeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    /**
+     * Info list
+     *
+     * Generates the contents for the detail view page of this resource.
+     *
+     * @param  Infolist  $infolist  The info list to configure.
+     *
+     * @return Infolist The configured info list.
+     *
+     * @throws Exception
+     */
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            Grid::make([
+                'sm' => 1,
+            ])
+                ->schema([
+                    InfoListSection::make(__('Pagina'))
+                        ->description(__('Basis informatie van de pagina.'))
+                        ->aside()
+                        ->schema([
+                            Grid::make(2)
+                                ->schema([
+                                    TextEntry::make('name')
+                                        ->label(__('Pagina naam')),
+
+                                    TextEntry::make('summary')
+                                        ->label(__('Introductie'))
+                                        ->helperText(__("Een korte samenvattende introductie over de inhoud van de pagina.")),
+
+                                    TextEntry::make('url')
+                                        ->label('URL')
+                                        ->html()
+                                        ->state(function (Page $record) {
+                                            return '<a href="' . url($record->getUrl()) . '">' . $record->getUrl() . '</a>';
+                                        }),
+                                ]),
+                        ]),
+
+                    InfoListSection::make(__('Administratie'))
+                        ->description(__('Belangrijke gegevens voor de ontwikkelaars van de categorie.'))
+                        ->aside()
+                        ->schema([
+                            TextEntry::make('id')
+                                ->label(__('ID'))
+                                ->numeric(),
+
+                            TextEntry::make('created_at')
+                                ->label(__('Aangemaakt op'))
+                                ->dateTime(),
+
+                            TextEntry::make('updated_at')
+                                ->label(__('Laatst gewijzigd op'))
+                                ->since(),
+
+                            TextEntry::make('deleted_at')
+                                ->label(__('Verwijderd op'))
+                                ->dateTime(),
+                        ]),
+                ]),
+        ]);
     }
 
     /**
