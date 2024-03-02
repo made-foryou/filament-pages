@@ -2,11 +2,14 @@
 
 namespace MadeForYou\FilamentPages\Filament\Resources\PageResource\Pages;
 
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Resources\Resource;
 use MadeForYou\FilamentPages\Filament\Resources\PageResource;
 
 /**
@@ -18,10 +21,18 @@ use MadeForYou\FilamentPages\Filament\Resources\PageResource;
 final class ViewPage extends ViewRecord
 {
     /**
-     * @var class-string<PageResource>
+     * Resource class which this page is related to.
+     *
+     * @var string<class-string<Resource>>
      */
     protected static string $resource = PageResource::class;
 
+    /**
+     * Returns an array with the actions which will be used within the
+     * header of this page.
+     *
+     * @return array|Action[]|ActionGroup[]
+     */
     protected function getHeaderActions(): array
     {
         return [

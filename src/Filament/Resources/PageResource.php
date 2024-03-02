@@ -33,7 +33,7 @@ use MadeForYou\FilamentPages\Models\Page;
  * @package made-foryou/filament-pages
  * @author Menno Tempelaar <menno@made-foryou.nl>
  */
-class PageResource extends Resource
+final class PageResource extends Resource
 {
     /**
      * The related model class string.
