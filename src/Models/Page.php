@@ -4,6 +4,7 @@ namespace MadeForYou\FilamentPages\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MadeForYou\FilamentPages\Database\Factories\PageFactory;
 
@@ -22,6 +23,7 @@ use MadeForYou\FilamentPages\Database\Factories\PageFactory;
 final class Page extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     /**
      * The attributes that should be cast.
