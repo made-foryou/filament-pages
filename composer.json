@@ -1,0 +1,40 @@
+{
+    "name": "made-foryou/filament-pages",
+    "description": "Package for managing pages within Filament.",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "MadeForYou\\FilamentPages\\": "src/",
+            "MadeForYou\\FilamentPages\\Database\\Factories\\": "database/factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MadeForYou\\FilamentPages\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Menno Tempelaar",
+            "email": "menno@made-foryou.nl"
+        }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": "^8.3",
+        "spatie/laravel-package-tools": "^1.16",
+        "filament/filament": "^3.2"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.14",
+        "orchestra/testbench": "^8.21"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MadeForYou\\FilamentPages\\FilamentPagesServiceProvider"
+            ]
+        }
+    }
+}

@@ -1,0 +1,10 @@
+# Composer
+/vendor/
+
+# PHPunit / Pest
+build
+.phpunit.cache
+
+# Editors
+.idea
+.vscode
