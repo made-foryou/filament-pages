@@ -19,12 +19,13 @@
             "email": "menno@made-foryou.nl"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": "^8.3",
         "spatie/laravel-package-tools": "^1.16",
-        "filament/filament": "^3.2"
+        "filament/filament": "^3.2",
+        "made-foryou/routes": "^0.0.1"
     },
     "require-dev": {
         "laravel/pint": "^1.14",

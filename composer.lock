@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dfef0047a42ef1102ce33d44fc483133",
+    "content-hash": "9828e5b10e1ce3590ea8ed8084e9c131",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2932,6 +2932,122 @@
                 }
             ],
             "time": "2024-02-20T14:04:25+00:00"
+        },
+        {
+            "name": "made-foryou/filament-helpers",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/made-foryou/filament-helpers.git",
+                "reference": "187d8c54f0427cb6adede47db75f8aade42e0150"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/made-foryou/filament-helpers/zipball/187d8c54f0427cb6adede47db75f8aade42e0150",
+                "reference": "187d8c54f0427cb6adede47db75f8aade42e0150",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.2",
+                "php": "~8.0",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.13",
+                "orchestra/testbench": "^8.20"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MadeForYou\\Helpers\\HelpersServiceProvider"
+                    ],
+                    "aliases": {
+                        "Packages": "MadeForYou\\Helpers\\Facades\\Packages",
+                        "Generate": "MadeForYou\\Helpers\\Facades\\Generate"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MadeForYou\\Helpers\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Menno Tempelaar",
+                    "email": "menno@made-foryou.nl",
+                    "role": "development"
+                }
+            ],
+            "description": "Helpers for the development of projects with the filament packages.",
+            "support": {
+                "issues": "https://github.com/made-foryou/filament-helpers/issues",
+                "source": "https://github.com/made-foryou/filament-helpers/tree/0.0.1"
+            },
+            "time": "2024-03-02T12:47:20+00:00"
+        },
+        {
+            "name": "made-foryou/routes",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/made-foryou/routes.git",
+                "reference": "0ad266aa2f204375e61ff398d5ad5bb3005fcd4c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/made-foryou/routes/zipball/0ad266aa2f204375e61ff398d5ad5bb3005fcd4c",
+                "reference": "0ad266aa2f204375e61ff398d5ad5bb3005fcd4c",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.2",
+                "made-foryou/filament-helpers": "^0.0.1",
+                "php": "~8.3",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.13",
+                "orchestra/testbench": "^8.21"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MadeForYou\\Routes\\RoutesServiceProvider"
+                    ],
+                    "aliases": {
+                        "Routing": "MadeForYou\\Routes\\Facades\\Routing"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MadeForYou\\Routes\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Menno Tempelaar",
+                    "email": "menno@made-foryou.nl",
+                    "role": "developer"
+                }
+            ],
+            "description": "A packages which can provide routing generated from the database.",
+            "support": {
+                "issues": "https://github.com/made-foryou/routes/issues",
+                "source": "https://github.com/made-foryou/routes/tree/0.0.1"
+            },
+            "time": "2024-03-02T12:51:22+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -10528,7 +10644,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
