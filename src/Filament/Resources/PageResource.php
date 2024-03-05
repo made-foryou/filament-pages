@@ -137,7 +137,7 @@ final class PageResource extends Resource
 
                 TextColumn::make('created_at')
                     ->label('Aangemaakt op')
-                    ->isDateTime()
+                    ->date()
                     ->sortable(),
             ])
             ->filters([
