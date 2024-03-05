@@ -26,7 +26,8 @@
         "php": "^8.3",
         "spatie/laravel-package-tools": "^1.16",
         "filament/filament": "^3.2",
-        "made-foryou/routes": "^0.0.1"
+        "made-foryou/routes": "^0.1",
+        "made-foryou/filament-helpers": "^0.1"
     },
     "require-dev": {
         "laravel/pint": "^1.14",
