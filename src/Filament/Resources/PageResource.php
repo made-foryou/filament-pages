@@ -231,8 +231,8 @@ final class PageResource extends Resource
     {
         return [
             'index' => Pages\ListPages::route('/'),
-            'view' => Pages\ViewPage::route('/{record}'),
             'create' => Pages\CreatePage::route('/create'),
+            'view' => Pages\ViewPage::route('/{record}'),
             'edit' => Pages\EditPage::route('/{record}/edit'),
         ];
     }
