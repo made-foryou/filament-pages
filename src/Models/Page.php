@@ -6,8 +6,10 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use MadeForYou\FilamentPages\Database\Factories\PageFactory;
+use MadeForYou\Helpers\Models\ModelWithContentBlocks;
 use MadeForYou\Routes\Contracts\HasRoute;
 use MadeForYou\Routes\Models\WithRoute;
 
@@ -28,7 +30,7 @@ use MadeForYou\Routes\Models\WithRoute;
  * @author Menno Tempelaar <menno@made-foryou.nl>
  * @package made-foryou/filament-pages
  */
-final class Page extends Model implements HasRoute
+final class Page extends Model implements HasRoute, ModelWithContentBlocks
 {
     use HasFactory;
     use SoftDeletes;
@@ -96,6 +98,30 @@ final class Page extends Model implements HasRoute
     #[\Override] public function getResourceLink(): string
     {
         return '';
+    }
+
+    /**
+     * @param string|null $key
+     *
+     * @return Collection
+     */
+    #[\Override] public function getContents(?string $key = null): Collection
+    {
+        $registered = collect(config('made-filament-pages.content_blocks'));
+        $key = $key ?? 'content';
+
+        return collect($this->getAttribute($key))
+            ->map(function (array $part) use ($registered) {
+                 $found = $registered->first(
+                     fn (string $block) => $block::id() === $part['type']
+                 );
+
+                 if (! $found) {
+                     return null;
+                 }
+
+                 return (new $found($part['data']));
+            });
     }
 
     /**
