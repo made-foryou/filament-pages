@@ -21,6 +21,7 @@ use MadeForYou\Routes\Models\WithRoute;
  * @property string $name
  * @property ?string $summary
  * @property array $content
+ * @property bool $in_menu
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  * @property-read ?Carbon $deleted_at
@@ -44,6 +45,7 @@ final class Page extends Model implements HasRoute, ModelWithContentBlocks
     protected $casts = [
         'id' => 'integer',
         'content' => 'array',
+        'in_menu' => 'bool',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -58,6 +60,7 @@ final class Page extends Model implements HasRoute, ModelWithContentBlocks
         'name',
         'summary',
         'content',
+        'in_menu',
     ];
 
     /**
