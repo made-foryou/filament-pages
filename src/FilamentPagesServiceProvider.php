@@ -35,7 +35,8 @@ final class FilamentPagesServiceProvider extends PackageServiceProvider
 		$package->name(self::$name)
             ->hasConfigFile()
             ->hasMigrations([
-                'create_pages_table'
+                'create_pages_table',
+                'add_in_menu_column_to_pages_table',
             ])
             ->hasInstallCommand(function (InstallCommand $installCommand) {
                 $installCommand->startWith(
