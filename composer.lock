@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "416529e4fa8b0e9f576570d8a62e2cb3",
+    "content-hash": "553a6ff2aea2e7400c56f93aca87b574",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2994,16 +2994,16 @@
         },
         {
             "name": "made-foryou/routes",
-            "version": "0.2.1",
+            "version": "0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/made-foryou/routes.git",
-                "reference": "e3ab9cea6d40998cacd6aa5675ebad9798666dea"
+                "reference": "199ef060b64a4c8df6031ca8f9b3bd27b5bd7dec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/made-foryou/routes/zipball/e3ab9cea6d40998cacd6aa5675ebad9798666dea",
-                "reference": "e3ab9cea6d40998cacd6aa5675ebad9798666dea",
+                "url": "https://api.github.com/repos/made-foryou/routes/zipball/199ef060b64a4c8df6031ca8f9b3bd27b5bd7dec",
+                "reference": "199ef060b64a4c8df6031ca8f9b3bd27b5bd7dec",
                 "shasum": ""
             },
             "require": {
@@ -3046,9 +3046,9 @@
             "description": "A packages which can provide routing generated from the database.",
             "support": {
                 "issues": "https://github.com/made-foryou/routes/issues",
-                "source": "https://github.com/made-foryou/routes/tree/0.2.1"
+                "source": "https://github.com/made-foryou/routes/tree/0.3.0"
             },
-            "time": "2024-03-14T13:36:01+00:00"
+            "time": "2024-06-06T08:29:23+00:00"
         },
         {
             "name": "masterminds/html5",
