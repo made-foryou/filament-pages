@@ -5,7 +5,10 @@ namespace MadeForYou\FilamentPages\Filament\Resources;
 use Exception;
 use Filament\Forms\Components\Builder as FormBuilder;
 use Filament\Forms\Components\Builder\Block;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -37,11 +40,9 @@ use MadeForYou\FilamentPages\Models\Page;
  * ## Page resource
  * ____________________________________
  *
- * @package made-foryou/filament-pages
  * @author  Menno Tempelaar <menno@made-foryou.nl>
  */
-final class PageResource
-    extends Resource
+final class PageResource extends Resource
 {
     /**
      * The related model class string.
@@ -53,16 +54,12 @@ final class PageResource
     /**
      * Slug name which will be used within filament for generating
      * the urls.
-     *
-     * @var string|null
      */
     protected static ?string $slug = 'pages';
 
     /**
      * Navigation icon which will be used within the menu on the left side
      * for presenting this resource.
-     *
-     * @var string|null
      */
     protected static ?string $navigationIcon = 'heroicon-o-folder';
 
@@ -71,53 +68,77 @@ final class PageResource
      *
      * Generates the contents of the form part which is used for creating and
      * updating instances of this resource.
-     *
-     * @param  Form  $form
-     *
-     * @return Form
      */
-    public static function form ( Form $form ): Form
+    public static function form(Form $form): Form
     {
         return $form
-            ->schema( [
-                Section::make( __( 'Pagina' ) )
-                    ->description( __( 'Basis informatie van de pagina.' ) )
+            ->schema([
+                Section::make(__('Pagina'))
+                    ->description(__('Basis informatie van de pagina.'))
                     ->aside()
-                    ->columns( [
+                    ->columns([
                         'sm' => 1,
-                    ] )
-                    ->schema( [
-                        TextInput::make( 'name' )
-                            ->label( __( 'Pagina naam' ) )
-                            ->required(),
+                    ])
+                    ->schema([
+                        Tabs::make('Tabs')
+                            ->tabs([
 
-                        TextInput::make( 'summary' )
-                            ->label( __( 'Introductie' ) )
-                            ->helperText(
-                                __(
-                                    "Een korte samenvattende introductie over de inhoud van de pagina."
-                                )
-                            )
-                            ->nullable(),
+                                Tabs\Tab::make('Pagina')->schema([
+                                    TextInput::make('name')
+                                        ->label(__('Pagina naam'))
+                                        ->required(),
 
-                        Toggle::make( 'in_menu' )
-                            ->label( 'Tonen in het menu?' ),
-                    ] ),
+                                    TextInput::make('summary')
+                                        ->label(__('Introductie'))
+                                        ->helperText(
+                                            __(
+                                                'Een korte samenvattende introductie over de inhoud van de pagina.'
+                                            )
+                                        )
+                                        ->nullable(),
 
-                Section::make( heading: 'Inhoud' )
-                    ->description( description: 'Pagina inhoud van het bericht' )
-                    ->columns( columns: [
+                                    Toggle::make('in_menu')
+                                        ->label('Tonen in het menu?'),
+                                ]),
+
+                                Tabs\Tab::make('Meta')->schema([
+                                    TextInput::make('meta_title')
+                                        ->label(__('Meta titel'))
+                                        ->maxLength(60)
+                                        ->hint(fn ($state) => strlen($state) . ' / 60')
+                                        ->lazy()
+                                        ->nullable(),
+
+                                    Textarea::make('meta_description')
+                                        ->label(__('Pagina omschrijving'))
+                                        ->maxLength(160)
+                                        ->hint(fn ($state) => strlen($state) . ' / 160')
+                                        ->lazy()
+                                        ->nullable(),
+
+                                    FileUpload::make('meta_image')
+                                        ->label(__('Uitgelichte afbeelding'))
+                                        ->image()
+                                        ->imageEditor()
+                                        ->nullable(),
+                                ]),
+                            ]),
+                    ]),
+
+                Section::make(heading: 'Inhoud')
+                    ->description(description: 'Pagina inhoud van het bericht')
+                    ->columns(columns: [
                         'sm' => 1,
-                    ] )
+                    ])
                     ->collapsible()
-                    ->schema( components: [
-                        FormBuilder::make( name: 'content' )
-                            ->label( __( 'Pagina inhoud' ) )
-                            ->blocks( self::getContentBlocks() )
+                    ->schema(components: [
+                        FormBuilder::make(name: 'content')
+                            ->label(__('Pagina inhoud'))
+                            ->blocks(self::getContentBlocks())
                             ->reorderable()
                             ->collapsible(),
-                    ] ),
-            ] );
+                    ]),
+            ]);
     }
 
     /**
@@ -125,24 +146,22 @@ final class PageResource
      *
      * @return array<int, Block>
      */
-    public static function getContentBlocks (): array
+    public static function getContentBlocks(): array
     {
-        return collect( config( 'made-filament-pages.content_blocks' ) )
-            ->map( fn ( string $block ) => ( new $block )->getBlock() )
+        return collect(config('made-filament-pages.content_blocks'))
+            ->map(fn (string $block) => (new $block)->getBlock())
             ->toArray();
     }
 
     /**
      * The eloquent builder which will be used for any queries of this resource.
-     *
-     * @return Builder
      */
-    public static function getEloquentQuery (): Builder
+    public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->withoutGlobalScopes( [
+            ->withoutGlobalScopes([
                 SoftDeletingScope::class,
-            ] );
+            ]);
     }
 
     /**
@@ -150,9 +169,9 @@ final class PageResource
      *
      * @return string[]
      */
-    public static function getGloballySearchableAttributes (): array
+    public static function getGloballySearchableAttributes(): array
     {
-        return [ 'name' ];
+        return ['name'];
     }
 
     /**
@@ -160,13 +179,13 @@ final class PageResource
      *
      * @return array|PageRegistration[]
      */
-    public static function getPages (): array
+    public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPages::route( '/' ),
-            'create' => Pages\CreatePage::route( '/create' ),
-            'view' => Pages\ViewPage::route( '/{record}' ),
-            'edit' => Pages\EditPage::route( '/{record}/edit' ),
+            'index' => Pages\ListPages::route('/'),
+            'create' => Pages\CreatePage::route('/create'),
+            'view' => Pages\ViewPage::route('/{record}'),
+            'edit' => Pages\EditPage::route('/{record}/edit'),
         ];
     }
 
@@ -176,84 +195,83 @@ final class PageResource
      * Generates the contents for the detail view page of this resource.
      *
      * @param  Infolist  $infolist  The info list to configure.
-     *
      * @return Infolist The configured info list.
      *
      * @throws Exception
      */
-    public static function infolist ( Infolist $infolist ): Infolist
+    public static function infolist(Infolist $infolist): Infolist
     {
-        return $infolist->schema( [
-            Grid::make( [
+        return $infolist->schema([
+            Grid::make([
                 'sm' => 1,
-            ] )
-                ->schema( [
-                    InfoListSection::make( __( 'Pagina' ) )
-                        ->description( __( 'Basis informatie van de pagina.' ) )
+            ])
+                ->schema([
+                    InfoListSection::make(__('Pagina'))
+                        ->description(__('Basis informatie van de pagina.'))
                         ->aside()
-                        ->schema( [
-                            Grid::make( 2 )
-                                ->schema( [
-                                    TextEntry::make( 'name' )
-                                        ->label( __( 'Pagina naam' ) ),
+                        ->schema([
+                            Grid::make(2)
+                                ->schema([
+                                    TextEntry::make('name')
+                                        ->label(__('Pagina naam')),
 
-                                    TextEntry::make( 'summary' )
-                                        ->label( __( 'Introductie' ) )
+                                    TextEntry::make('summary')
+                                        ->label(__('Introductie'))
                                         ->helperText(
                                             __(
-                                                "Een korte samenvattende introductie over de inhoud van de pagina."
+                                                'Een korte samenvattende introductie over de inhoud van de pagina.'
                                             )
                                         ),
 
-                                    TextEntry::make( 'in_menu' )
-                                        ->label( __( 'Menu' ) )
+                                    TextEntry::make('in_menu')
+                                        ->label(__('Menu'))
                                         ->badge()
                                         ->color(
-                                            fn ( bool $value ) => $value ? 'success' : 'warning'
+                                            fn (bool $value) => $value ? 'success' : 'warning'
                                         )
                                         ->formatStateUsing(
-                                            fn ( bool $value ) => $value ? __(
+                                            fn (bool $value) => $value ? __(
                                                 'Zichtbaar in het menu'
-                                            ) : __( 'Niet zichtbaar in het menu' )
+                                            ) : __('Niet zichtbaar in het menu')
                                         ),
 
-                                    TextEntry::make( 'url' )
-                                        ->label( 'URL' )
+                                    TextEntry::make('url')
+                                        ->label('URL')
                                         ->html()
-                                        ->state( function ( Page $record ) {
+                                        ->state(function (Page $record) {
                                             return '<a href="'
-                                                . url( $record->getUrl() )
+                                                . url($record->getUrl())
                                                 . '">'
                                                 . $record->getUrl()
                                                 . '</a>';
-                                        } ),
-                                ] ),
-                        ] ),
+                                        }),
+                                ]),
+                        ]),
 
-                    InfoListSection::make( __( 'Administratie' ) )
+                    InfoListSection::make(__('Administratie'))
                         ->description(
-                            __( 'Belangrijke gegevens voor de ontwikkelaars van de categorie.' )
+                            __('Belangrijke gegevens voor de ontwikkelaars van de categorie.')
                         )
                         ->aside()
-                        ->schema( [
-                            TextEntry::make( 'id' )
-                                ->label( __( 'ID' ) )
+                        ->schema([
+                            TextEntry::make('id')
+                                ->label(__('ID'))
                                 ->numeric(),
 
-                            TextEntry::make( 'created_at' )
-                                ->label( __( 'Aangemaakt op' ) )
+                            TextEntry::make('created_at')
+                                ->label(__('Aangemaakt op'))
                                 ->dateTime(),
 
-                            TextEntry::make( 'updated_at' )
-                                ->label( __( 'Laatst gewijzigd op' ) )
+                            TextEntry::make('updated_at')
+                                ->label(__('Laatst gewijzigd op'))
                                 ->since(),
 
-                            TextEntry::make( 'deleted_at' )
-                                ->label( __( 'Verwijderd op' ) )
+                            TextEntry::make('deleted_at')
+                                ->label(__('Verwijderd op'))
                                 ->dateTime(),
-                        ] ),
-                ] ),
-        ] );
+                        ]),
+                ]),
+        ]);
     }
 
     /**
@@ -262,50 +280,47 @@ final class PageResource
      * Generates the contents for the index table which is used for showing the current
      * instances of this resource.
      *
-     * @param  Table  $table
      *
-     * @return Table
      *
      * @throws Exception
      */
-    public static function table ( Table $table ): Table
+    public static function table(Table $table): Table
     {
         return $table
-            ->columns( [
-                TextColumn::make( 'name' )
-                    ->label( 'Pagina naam' )
+            ->columns([
+                TextColumn::make('name')
+                    ->label('Pagina naam')
                     ->searchable()
                     ->sortable(),
 
-                ToggleColumn::make( 'in_menu' )
-                    ->label( 'Tonen in het menu?' ),
+                ToggleColumn::make('in_menu')
+                    ->label('Tonen in het menu?'),
 
-                TextColumn::make( 'updated_at' )
-                    ->label( 'Laatst gewijzigd op' )
+                TextColumn::make('updated_at')
+                    ->label('Laatst gewijzigd op')
                     ->since()
                     ->sortable(),
 
-                TextColumn::make( 'created_at' )
-                    ->label( 'Aangemaakt op' )
+                TextColumn::make('created_at')
+                    ->label('Aangemaakt op')
                     ->date()
                     ->sortable(),
-            ] )
-            ->filters( [
+            ])
+            ->filters([
                 TrashedFilter::make(),
-            ] )
-            ->actions( [
+            ])
+            ->actions([
                 EditAction::make(),
                 DeleteAction::make(),
                 RestoreAction::make(),
                 ForceDeleteAction::make(),
-            ] )
-            ->bulkActions( [
-                BulkActionGroup::make( [
+            ])
+            ->bulkActions([
+                BulkActionGroup::make([
                     DeleteBulkAction::make(),
                     RestoreBulkAction::make(),
                     ForceDeleteBulkAction::make(),
-                ] ),
-            ] );
+                ]),
+            ]);
     }
-
 }

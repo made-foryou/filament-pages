@@ -22,6 +22,9 @@ use MadeForYou\Routes\Models\WithRoute;
  * @property ?string $summary
  * @property array $content
  * @property bool $in_menu
+ * @property null|string $meta_title
+ * @property null|string $meta_description
+ * @property null|string $meta_image
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  * @property-read ?Carbon $deleted_at
@@ -29,7 +32,6 @@ use MadeForYou\Routes\Models\WithRoute;
  * @method static PageFactory factory($count = null, $state = [])
  *
  * @author Menno Tempelaar <menno@made-foryou.nl>
- * @package made-foryou/filament-pages
  */
 final class Page extends Model implements HasRoute, ModelWithContentBlocks
 {
@@ -61,76 +63,63 @@ final class Page extends Model implements HasRoute, ModelWithContentBlocks
         'summary',
         'content',
         'in_menu',
+        'meta_title',
+        'meta_description',
+        'meta_image',
     ];
 
-    /**
-     * @return string
-     */
-    #[\Override] public function getUrl(): string
+    #[\Override]
+    public function getUrl(): string
     {
         return Str::slug($this->name);
     }
 
-    /**
-     * @return string
-     */
-    #[\Override] public function getRouteName(): string
+    #[\Override]
+    public function getRouteName(): string
     {
-        return 'page.'.$this->id;
+        return 'page.' . $this->id;
     }
 
-    /**
-     * @return string
-     */
-    #[\Override] public function getTitle(): string
+    #[\Override]
+    public function getTitle(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    #[\Override] public function getType(): string
+    #[\Override]
+    public function getType(): string
     {
         return 'Pagina';
     }
 
-    /**
-     * @return string
-     */
-    #[\Override] public function getResourceLink(): string
+    #[\Override]
+    public function getResourceLink(): string
     {
         return '';
     }
 
-    /**
-     * @param string|null $key
-     *
-     * @return Collection
-     */
-    #[\Override] public function getContents(?string $key = null): Collection
+    #[\Override]
+    public function getContents(?string $key = null): Collection
     {
         $registered = collect(config('made-filament-pages.content_blocks'));
         $key = $key ?? 'content';
 
         return collect($this->getAttribute($key))
             ->map(function (array $part) use ($registered) {
-                 $found = $registered->first(
-                     fn (string $block) => $block::id() === $part['type']
-                 );
+                $found = $registered->first(
+                    fn (string $block) => $block::id() === $part['type']
+                );
 
-                 if (! $found) {
-                     return null;
-                 }
+                if (! $found) {
+                    return null;
+                }
 
-                 return (new $found($part['data']));
+                return new $found($part['data']);
             });
     }
 
     /**
      * Create a new factory instance for the model.
-     *
-     * @return PageFactory
      */
     protected static function newFactory(): PageFactory
     {
