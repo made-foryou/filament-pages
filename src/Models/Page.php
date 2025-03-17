@@ -22,6 +22,7 @@ use MadeForYou\Routes\Models\WithRoute;
  * @property ?string $summary
  * @property array $content
  * @property bool $in_menu
+ * @property int $index
  * @property null|string $meta_title
  * @property null|string $meta_description
  * @property null|string $meta_image
@@ -48,6 +49,7 @@ final class Page extends Model implements HasRoute, ModelWithContentBlocks
         'id' => 'integer',
         'content' => 'array',
         'in_menu' => 'bool',
+        'index' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -63,6 +65,7 @@ final class Page extends Model implements HasRoute, ModelWithContentBlocks
         'summary',
         'content',
         'in_menu',
+        'index',
         'meta_title',
         'meta_description',
         'meta_image',
@@ -107,7 +110,7 @@ final class Page extends Model implements HasRoute, ModelWithContentBlocks
         return collect($this->getAttribute($key))
             ->map(function (array $part) use ($registered) {
                 $found = $registered->first(
-                    fn (string $block) => $block::id() === $part['type']
+                    fn(string $block) => $block::id() === $part['type']
                 );
 
                 if (! $found) {

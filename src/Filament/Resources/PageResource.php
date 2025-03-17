@@ -99,20 +99,25 @@ final class PageResource extends Resource
 
                                     Toggle::make('in_menu')
                                         ->label('Tonen in het menu?'),
+
+                                    TextInput::make('index')
+                                        ->label('Volgorde')
+                                        ->default(fn() => 1)
+                                        ->numeric(),
                                 ]),
 
                                 Tabs\Tab::make('Meta')->schema([
                                     TextInput::make('meta_title')
                                         ->label(__('Meta titel'))
                                         ->maxLength(60)
-                                        ->hint(fn ($state) => strlen($state) . ' / 60')
+                                        ->hint(fn($state) => strlen($state) . ' / 60')
                                         ->lazy()
                                         ->nullable(),
 
                                     Textarea::make('meta_description')
                                         ->label(__('Pagina omschrijving'))
                                         ->maxLength(160)
-                                        ->hint(fn ($state) => strlen($state) . ' / 160')
+                                        ->hint(fn($state) => strlen($state) . ' / 160')
                                         ->lazy()
                                         ->nullable(),
 
@@ -149,7 +154,7 @@ final class PageResource extends Resource
     public static function getContentBlocks(): array
     {
         return collect(config('made-filament-pages.content_blocks'))
-            ->map(fn (string $block) => (new $block)->getBlock())
+            ->map(fn(string $block) => (new $block)->getBlock())
             ->toArray();
     }
 
@@ -227,10 +232,10 @@ final class PageResource extends Resource
                                         ->label(__('Menu'))
                                         ->badge()
                                         ->color(
-                                            fn (bool $value) => $value ? 'success' : 'warning'
+                                            fn(bool $value) => $value ? 'success' : 'warning'
                                         )
                                         ->formatStateUsing(
-                                            fn (bool $value) => $value ? __(
+                                            fn(bool $value) => $value ? __(
                                                 'Zichtbaar in het menu'
                                             ) : __('Niet zichtbaar in het menu')
                                         ),
