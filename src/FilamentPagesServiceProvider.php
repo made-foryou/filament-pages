@@ -32,10 +32,11 @@ final class FilamentPagesServiceProvider extends PackageServiceProvider
                 'create_pages_table',
                 'add_in_menu_column_to_pages_table',
                 'add_meta_column_to_pages_table',
+                'add_index_column_to_pages_table',
             ])
             ->hasInstallCommand(function (InstallCommand $installCommand) {
                 $installCommand->startWith(
-                    fn (InstallCommand $command) => $command->info(
+                    fn(InstallCommand $command) => $command->info(
                         'Let\'s install the Made for you filament pages package.'
                     )
                 )
